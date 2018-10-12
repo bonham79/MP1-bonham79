@@ -31,8 +31,8 @@ rvregularize = (pynini.string_map([("A", "ä"), ("O", "ö"), ("S", "š")]) |
 
 
 ######################FST for harmony in suffix####################################################
-regular_state = closure_regular.optimize()##pynini.string_map(closure_regular, input_token_type="utf8", output_token_type="utf8").closure().optimize()
-harmony_state = closure_harmony.optimize()##pynini.string_map(closure_harmony, input_token_type="utf8", output_token_type="utf8").closure().optimize()
+regular_state = closure_regular.optimize()
+harmony_state = closure_harmony.optimize()
 
 adessive_regular_transduce = pynini.transducer("", adessive_regular)#, output_token_type="utf8")
 adessive_harmony_transduce = pynini.transducer("", adessive_harmony)#, output_token_type="utf8")
