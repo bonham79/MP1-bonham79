@@ -1,0 +1,36 @@
+M1.1 Finite State Morphophonology.  
+
+Rules
+	The two FSM’s are each a composite of the union of two similar FST’s.  Each possesses: (1) an FST closed over the entire alphabet except for the vowels that produce vowel harmony; (2) an FST concatenated to the prior one to affixate the respective suffix allomorph containing the vowel /ä/; (3) a mirror FST similar to the concatenation of (1) and (2), except the closure and concatenation contain the vowels that stimulate vowel harmony, the respective allomorph containing /a/, and exclude the vowels that block its occurrence; and (4) transducer arcs between the (1) + (2) and (3) that recognize harmony vowels for (1) + (2) > (3) and harmony blocking vowels for (3) > (1 + 2).    The resultant union was then optimized and had its start state altered to begin at the origin for (1 + 2).  
+	Use of this base FST provided a coverage rate of ~82.19% (60 words) for inessive nouns and ~70.13% (54 words) for adessive nouns given the data set.  Noticing that Finnish breaks consonant clusters when suffixation occurs on consonant final roots, I created an insertion rule that produced an /e/ when the root ended in a consonant.  (As all suffixes begin with a consonant, there was no need to make the right context rule more specific than recognizing the suffix occurred after this final consonant.)  This change produced no quantitative difference in the coverage rate.
+	Using rules provided from Kiparsky and Stensson regarding consonant gradation in Finnish, a FST was created that provided the following rewrite rules1:
+	 kk ? k
+	 pp ? p
+	 tt   ? t           (+Sonorant) _ V(Suffix)     
+	 lk  ? l 
+	 t    ? d
+	Applied after the insertion rule (which subsequently provides the vowel Kiparsky and Stensson originally provided as the right context for the rule), the consonant gradation caused no coverage change for inessive verbs and raised inessive coverage to ~80.52% (62 words).  
+	The following observation was noted in regards to /s/: before /u/, a /ks/ cluster was found in its derived form while /d/ had replaced /s/ in derivations containing /uu/ and /Vy/.  Searching for more data points, words like /imetys/ displayed the /s/ ? /ks/ phenomenon.  As such, it was stipulated that the conditioning factor producing the stop was the presence of high vowels before /s/.  It was hypothesized that the addition of the suffix creates a reactionary morae creation on the part of the preceding syllable.  This morae becomes realized as /C[+Stop]/.  When the syllable before the suffix is “weak” i.e. possesses only a single morae, this consonant is affixed to the rhyme, assimilates the ‘highness’ of the vowel, and becomes recognized as the velar /k/.  However, in cases of strong syllables, i.e. 2+ morae, this stop assimilates /s/ and become fronted as a /t/.  The gradation rule would then take effect and /t/ ? /d/.  Condensed:
+	 ? ?  k / V[+High] _ s +suffix
+	ks ? t / V V _ +suffix 
+Addition of this rule prior to insertion and consonant gradation increased coverage of inessive nouns to ~90.41% (66 words) and adessive nouns to ~83.12% (64 words).  
+	The final rule was the provision of nasal assimilation of the alveolar plosive (t ? n/n_V+suffix) which increased inessive coverage to ~91.78% (67 words) and adessive to ~84.42% (65 words).  While the addition of two tokens was not crucially mandated by the data, nasal assimilation is a common enough phenomenon across langauges to permit this rule without fear of model overfitting.  
+
+
+Outliers
+	About 18 data points were not accepted by the final FST.  Of these, 5 (/diskofilli/, /oliiviseitikki/, /mikrokliini/, /tapionherkkusieni/, /onnellisuuspilleri/, /videopeli/) were due to an inability to properly realize vowel harmony.   This is to be expected as this subset is comprised of either compound or loan words, which are noted to display irregular vowel harmony in Finnish (Ringen and Heinamaki).  As the dataset cannot provide sufficient morphological information to account for this, the failure rate is deemed acceptable.
+	For the remaining 13 datapoints, while rules can be applied to correct for their occurrence, the sample size is far too small (<2) for each hypothetical rule to be general enough that overcorrection will not occur.  For example, consider the lemma ? derived pairs of:
+	/savutin/ ? /savuttimessa/
+	/seikkailijatar/ ? /seikkailijattarella/
+It is difficult to determine the exact cause of gemination and whether it is a general rule for consonants or simply /t/.  Both geminates may simply be the product of underlying phonemes that are unrealized in their respective lemmas.  As well, the /n/ ? /m/ change occurs only for /savutin/.  This could be due to /n/ being ultimately an allophone of a general nasal /N/ or a consequence of the gradation and its effects on proximate alveolars.  
+
+Final Results
+Inessive: ~91.78% (67 tokens)
+Adessive: ~84.42% (65 tokens)
+Total: 88% (132 tokens)
+
+Works cited:
+
+Ringen and Heinamaki.  “Variation In Finnish Vowel Harmony: An OT Account”
+Stennson, Leif.  “A Very Short Finnish Grammar.” 	http://www.lysator.liu.se/language/Languages/Finnish/Grammar.html
+Kiparsky, Paul.  “Finnish Noun Inflection.”  	https://web.stanford.edu/~kiparsky/Papers/finnish.article.pdf
