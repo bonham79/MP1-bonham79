@@ -87,8 +87,8 @@ final_stress_preservation.optimize()
 nt_assimilation = pynini.cdrewrite(pynini.transducer("t", "n"), "n", vowels + suffixes, closure).optimize()
 
 #Intersection of rules
-transducer_adessive = regularize * transducer_adessive_base * nt_assimilation * consonant_reduction  * insertion * final_stress_preservation * rvregularize
-transducer_inessive = regularize * transducer_inessive_base * nt_assimilation * consonant_reduction  * insertion * final_stress_preservation * rvregularize
+transducer_adessive = regularize * transducer_adessive_base * nt_assimilation  * final_stress_preservation * insertion * consonant_reduction  * rvregularize
+transducer_inessive = regularize * transducer_inessive_base * nt_assimilation  * final_stress_preservation * insertion * consonant_reduction  * rvregularize
 
 #########################Generates FAR ###############################3
 with pynini.Far("finnish.far", "w") as sink:
