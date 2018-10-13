@@ -1,3 +1,5 @@
+#!/usr/bin/python3.6m
+###To generate far, run executable ./m1_finnish.py
 import pynini
 
 ##########Setting Up Vocabulary FSTs#################################################
